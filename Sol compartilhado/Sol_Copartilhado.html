@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Mercado e Concorrência: Energia Solar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-amber-200 selection:text-amber-900">
+
+    <!-- Chosen Palette: Warm Neutrals with Solar Amber/Orange and Eco Green Accents (Slate, Amber, Emerald) -->
+    <!-- Application Structure Plan: A single-page dashboard structured chronologically for market understanding. Section 1 introduces the types of competition a solar company faces (educational/context). Section 2 presents the requested interactive competitive analysis table (direct answer to the prompt). Section 3 visualizes the competitive landscape using a radar chart to compare the user's hypothetical company against the market average, providing analytical depth. -->
+    <!-- Visualization & Content Choices: Report Info -> Types of Competition | Goal -> Inform & Categorize | Presentation -> Feature Cards | Interaction -> Hover states | Justification -> Breaks down complex market dynamics into easily digestible bits | Library -> HTML/Tailwind. Report Info -> Competitive Matrix | Goal -> Compare | Presentation -> Interactive Data Table | Interaction -> Dynamic row generation | Justification -> Directly answers the user's request matching the uploaded image format | Library -> Vanilla JS/HTML. Report Info -> Competitive Edge | Goal -> Relationships/Comparison | Presentation -> Radar Chart | Interaction -> Tooltips, Dataset toggling | Justification -> Shows multi-dimensional strengths and weaknesses at a glance | Library -> Chart.js. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl mr-2">☀️</span>
+                    <span class="font-bold text-xl tracking-tight text-slate-800">Solar<span class="text-amber-500">Analytics</span></span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="document.getElementById('tabela').scrollIntoView({behavior: 'smooth'})" class="text-sm font-medium text-slate-600 hover:text-amber-500 transition-colors">Tabela de Concorrência</button>
+                    <button onclick="document.getElementById('grafico').scrollIntoView({behavior: 'smooth'})" class="text-sm font-medium text-slate-600 hover:text-amber-500 transition-colors">Gráfico Comparativo</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+        
+        <header class="text-center max-w-3xl mx-auto mb-12 pt-8">
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl mb-4">
+                Mapeamento do Mercado Solar
+            </h1>
+            <p class="text-lg text-slate-600">
+                Uma análise estruturada das forças competitivas no setor de energia fotovoltaica, projetada para identificar oportunidades e posicionar estrategicamente sua empresa.
+            </p>
+        </header>
+
+        <section id="tipos" class="space-y-6">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-slate-800 border-l-4 border-amber-500 pl-3">Tipos de Concorrência no Setor</h2>
+                <p class="mt-2 text-slate-600">Para uma empresa de produtos fotovoltaicos, a concorrência vai muito além de outras lojas. Entender os diferentes níveis é crucial para a estratégia de vendas.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card rounded-2xl p-6 transition-transform transform hover:-translate-y-1 duration-300">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center text-2xl mb-4">🎯</div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">Concorrência Direta</h3>
+                    <p class="text-sm text-slate-600 mb-4">Empresas que oferecem exatamente os mesmos produtos e serviços para o mesmo público-alvo.</p>
+                    <ul class="text-sm text-slate-500 space-y-2">
+                        <li>• Outros integradores locais de energia solar.</li>
+                        <li>• Grandes e-commerces de kits fotovoltaicos.</li>
+                        <li>• Franquias nacionais de instalação solar.</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 transition-transform transform hover:-translate-y-1 duration-300">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center text-2xl mb-4">🔄</div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">Concorrência Indireta</h3>
+                    <p class="text-sm text-slate-600 mb-4">Empresas que resolvem o mesmo problema (redução de conta/energia limpa) de maneira diferente.</p>
+                    <ul class="text-sm text-slate-500 space-y-2">
+                        <li>• Serviços de "Energia por Assinatura" (Geração Distribuída).</li>
+                        <li>• Empresas de eficiência energética (LED, isolamento).</li>
+                        <li>• Vendedores de aquecedores solares térmicos (água).</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 transition-transform transform hover:-translate-y-1 duration-300">
+                    <div class="w-12 h-12 bg-slate-100 text-slate-600 rounded-lg flex items-center justify-center text-2xl mb-4">⚡</div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">Concorrentes Substitutos</h3>
+                    <p class="text-sm text-slate-600 mb-4">Alternativas estruturais que impedem o cliente de comprar painéis solares.</p>
+                    <ul class="text-sm text-slate-500 space-y-2">
+                        <li>• A própria Concessionária de Energia (Status Quo).</li>
+                        <li>• Migração para o Mercado Livre de Energia (empresas).</li>
+                        <li>• Geradores a diesel/gás (em áreas remotas).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="tabela" class="pt-8">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-slate-800 border-l-4 border-amber-500 pl-3">Tabela de Análise da Concorrência</h2>
+                <p class="mt-2 text-slate-600">Baseado no modelo solicitado e em inteligência de mercado do setor de engenharia solar, mapeamos o seu posicionamento frente aos principais perfis de concorrentes.</p>
+            </div>
+
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider w-1/5">Concorrente</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider w-1/5">Preço</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider w-1/5">Qualidade (Equips.)</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider w-1/5">Atendimento/Pós-venda</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider w-1/5">Diferencial</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-corpo" class="bg-white divide-y divide-slate-100 text-sm">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="grafico" class="pt-8 pb-16">
+            <div class="mb-8 text-center max-w-2xl mx-auto">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Mapeamento de Competitividade</h2>
+                <p class="text-slate-600">Visualização comparativa das forças do seu negócio em relação à média do mercado de integradores solares.</p>
+            </div>
+            
+            <div class="glass-card rounded-2xl p-8 max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="w-full md:w-1/2">
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 space-y-4">
+                    <h3 class="text-xl font-bold text-slate-800">Análise do Gráfico</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        A área <span class="font-bold text-amber-500">Laranja</span> representa a força da <strong>Sua Empresa</strong>. A área <span class="font-bold text-slate-400">Cinza</span> representa a média dos <strong>Concorrentes Diretos</strong>.
+                    </p>
+                    <ul class="space-y-3 mt-4">
+                        <li class="flex items-start">
+                            <span class="text-emerald-500 mr-2 mt-0.5">✓</span>
+                            <span class="text-sm text-slate-700"><strong>Ponto Forte:</strong> Seu Atendimento e Qualidade superam a média do mercado, criando forte retenção e indicação.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-emerald-500 mr-2 mt-0.5">✓</span>
+                            <span class="text-sm text-slate-700"><strong>Diferencial:</strong> O foco em Inovação e Sustentabilidade são chaves para justificar o preço.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-amber-500 mr-2 mt-0.5">!</span>
+                            <span class="text-sm text-slate-700"><strong>Ponto de Atenção:</strong> O Preço é menos agressivo que as grandes franquias (Concorrente 1). A venda deve focar em Valor e ROI a longo prazo.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm">
+        <p>© 2026 Inteligência de Mercado | Setor Fotovoltaico</p>
+    </footer>
+
+    <script>
+        const tableData = [
+            {
+                id: "sua-empresa",
+                nome: "Sua Empresa",
+                subtexto: "(Foco em Qualidade/Consultoria)",
+                preco: "Alto",
+                qualidade: "Premium (Tier 1)",
+                atendimento: "Excelente / Personalizado",
+                diferencial: "Projeto de engenharia consultivo, monitoramento inteligente e garantia estendida.",
+                bgColor: "bg-amber-50"
+            },
+            {
+                id: "conc-1",
+                nome: "Concorrente 1",
+                subtexto: "(Grande Franquia Nacional)",
+                preco: "Agressivo (Baixo)",
+                qualidade: "Média (Equip. de entrada)",
+                atendimento: "Automatizado / Lento no Pós",
+                diferencial: "Poder de negociação com fornecedores, estoque pronta-entrega, marketing agressivo.",
+                bgColor: "bg-white"
+            },
+            {
+                id: "conc-2",
+                nome: "Concorrente 2",
+                subtexto: "(E-commerce de Kits)",
+                preco: "Muito Baixo",
+                qualidade: "Variável",
+                atendimento: "Apenas suporte online",
+                diferencial: "Foco no mercado 'Faça Você Mesmo' ou eletricistas independentes. Preço puro.",
+                bgColor: "bg-white"
+            },
+            {
+                id: "conc-3",
+                nome: "Concorrente 3",
+                subtexto: "(Assinatura de Energia - Indireto)",
+                preco: "Zero Investimento Inicial",
+                qualidade: "N/A (Entrega apenas o crédito)",
+                atendimento: "Bom",
+                diferencial: "Elimina a necessidade de obras e painéis no telhado. Foco em clientes sem capital inicial.",
+                bgColor: "bg-white"
+            }
+        ];
+
+        function getBadgeColor(text) {
+            const lowerText = text.toLowerCase();
+            if (lowerText.includes('alto') && !lowerText.includes('muito') || lowerText.includes('excelente') || lowerText.includes('premium')) return 'bg-emerald-100 text-emerald-800';
+            if (lowerText.includes('baixo') || lowerText.includes('zero')) return 'bg-blue-100 text-blue-800';
+            if (lowerText.includes('médio') || lowerText.includes('média') || lowerText.includes('variável') || lowerText.includes('automatizado')) return 'bg-slate-100 text-slate-800';
+            return 'bg-slate-100 text-slate-800';
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tabela-corpo');
+            let html = '';
+
+            tableData.forEach(row => {
+                const isHighlight = row.id === 'sua-empresa';
+                html += `
+                    <tr class="${row.bgColor} hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-5 whitespace-nowrap">
+                            <div class="font-bold ${isHighlight ? 'text-amber-600 text-base' : 'text-slate-800'}">${row.nome}</div>
+                            <div class="text-xs text-slate-500 mt-1">${row.subtexto}</div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getBadgeColor(row.preco)}">
+                                ${row.preco}
+                            </span>
+                        </td>
+                        <td class="px-6 py-5 text-slate-700 font-medium">
+                            ${row.qualidade}
+                        </td>
+                        <td class="px-6 py-5 text-slate-700">
+                            ${row.atendimento}
+                        </td>
+                        <td class="px-6 py-5 text-slate-600 text-sm whitespace-normal w-64 leading-relaxed">
+                            ${row.diferencial}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.color = '#64748b';
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Preço Competitivo', 
+                        'Qualidade Eqpto.', 
+                        'Pós-venda', 
+                        'Velocidade Instalação', 
+                        'Garantias',
+                        'Inovação'
+                    ],
+                    datasets: [{
+                        label: 'Sua Empresa',
+                        data: [6, 10, 9, 7, 9, 8],
+                        fill: true,
+                        backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                        borderColor: 'rgb(245, 158, 11)',
+                        pointBackgroundColor: 'rgb(245, 158, 11)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(245, 158, 11)',
+                        borderWidth: 2
+                    }, {
+                        label: 'Média Concorrência Direta',
+                        data: [9, 6, 5, 8, 5, 4],
+                        fill: true,
+                        backgroundColor: 'rgba(148, 163, 184, 0.2)',
+                        borderColor: 'rgb(148, 163, 184)',
+                        pointBackgroundColor: 'rgb(148, 163, 184)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(148, 163, 184)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleFont: { size: 13, weight: 'bold' },
+                            bodyFont: { size: 13 },
+                            padding: 10,
+                            cornerRadius: 8,
+                            displayColors: true
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(226, 232, 240, 0.5)'
+                            },
+                            grid: {
+                                color: 'rgba(226, 232, 240, 0.5)'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 11,
+                                    weight: '600'
+                                },
+                                color: '#475569'
+                            },
+                            ticks: {
+                                backdropColor: 'transparent',
+                                min: 0,
+                                max: 10,
+                                stepSize: 2,
+                                display: false 
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTable();
+            initChart();
+        });
+    </script>
+</body>
+</html>
